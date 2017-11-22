@@ -1,5 +1,7 @@
+import api from './../api';
+
 // action types
-const FETCH_TRACKS_SUCCESS = 'FETCH_TRACKS_SUCCESS';
+export const FETCH_TRACKS_SUCCESS = 'FETCH_TRACKS_SUCCESS';
 
 // action creators
 export function setTracks(tracks) {
@@ -10,3 +12,12 @@ export function setTracks(tracks) {
 }
 
 // async actions
+export function searchTracks(term) {
+  return async dispatch => {
+    const results = await api.tracks.searchTracks(term);
+
+    dispatch(setTracks(results.collection));
+
+    return results.collection;
+  };
+}
