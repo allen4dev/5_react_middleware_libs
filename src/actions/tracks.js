@@ -16,8 +16,8 @@ export function searchTracks(term) {
   return async dispatch => {
     const results = await api.tracks.searchTracks(term);
 
-    dispatch(setTracks(results.collection));
+    dispatch(setTracks(results));
 
-    return results.collection;
+    return results;
   };
 }
