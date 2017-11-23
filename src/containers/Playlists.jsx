@@ -5,9 +5,9 @@ import * as playlists from './../actions/playlists';
 
 export class Playlists extends Component {
   async componentDidMount() {
-    const { items, searchPlaylists } = this.props;
+    const { items, fetching, searchPlaylists } = this.props;
 
-    if (items.length === 0) {
+    if (items.length === 0 && !fetching) {
       await searchPlaylists('anime');
     }
   }
@@ -22,6 +22,7 @@ export class Playlists extends Component {
             </li>
           ))}
         </ul>
+        {this.props.fetching && <h1>Loading...</h1>}
       </div>
     );
   }
@@ -29,7 +30,8 @@ export class Playlists extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.playlists,
+    items: state.playlists.entities,
+    fetching: state.playlists.fetching,
   };
 }
 

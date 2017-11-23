@@ -5,9 +5,9 @@ import * as tracks from './../actions/tracks';
 
 export class Tracks extends Component {
   async componentDidMount() {
-    const { items, searchTracks } = this.props;
+    const { items, fetching, searchTracks } = this.props;
 
-    if (items.length === 0) {
+    if (items.length === 0 && !fetching) {
       await searchTracks('anime');
     }
   }
@@ -22,6 +22,7 @@ export class Tracks extends Component {
             </li>
           ))}
         </ul>
+        {this.props.fetching && <h1>Loading...</h1>}
       </div>
     );
   }
@@ -29,7 +30,8 @@ export class Tracks extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.tracks,
+    items: state.tracks.entities,
+    fetching: state.tracks.fetching,
   };
 }
 

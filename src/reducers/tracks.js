@@ -1,10 +1,16 @@
-import { FETCH_TRACKS_SUCCESS } from './../actions/tracks';
+import { combineReducers } from 'redux';
+
+import {
+  FETCH_TRACKS_SUCCESS,
+  FETCH_TRACKS_REQUEST,
+} from './../actions/tracks';
 
 const INITIAL_STATE = {
-  tracks: [],
+  entities: [],
+  fetching: false,
 };
 
-function tracksReducer(state = INITIAL_STATE.tracks, action = {}) {
+function entitiesReducer(state = INITIAL_STATE.entities, action = {}) {
   switch (action.type) {
     case FETCH_TRACKS_SUCCESS:
       return [...state, ...action.payload];
@@ -13,4 +19,22 @@ function tracksReducer(state = INITIAL_STATE.tracks, action = {}) {
   }
 }
 
-export default tracksReducer;
+function fetchingReducer(state = INITIAL_STATE.fetching, action = {}) {
+  switch (action.type) {
+    case FETCH_TRACKS_REQUEST:
+      return true;
+
+    case FETCH_TRACKS_SUCCESS:
+      return false;
+
+    default:
+      return state;
+  }
+}
+
+const reducer = combineReducers({
+  entities: entitiesReducer,
+  fetching: fetchingReducer,
+});
+
+export default reducer;
