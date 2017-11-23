@@ -1,39 +1,20 @@
 import api from './../api';
+import { API } from './../middlewares/actionTypes';
 
 // action types
-export const FETCH_PLAYLISTS_REQUEST = 'FETCH_PLAYLISTS_REQUEST';
 export const FETCH_PLAYLISTS_SUCCESS = 'FETCH_PLAYLISTS_SUCCESS';
 
 // action creators
-export function setPlaylists(playlists) {
+export function setPlaylists(playlists, filter) {
   return {
     type: FETCH_PLAYLISTS_SUCCESS,
-    payload: { playlists, filter: 'playlists' },
+    payload: { playlists, filter },
   };
 }
-
-export function requestPlaylists() {
-  return {
-    type: FETCH_PLAYLISTS_REQUEST,
-  };
-}
-
-// async actions
-// export function searchPlaylists(term) {
-//   return async dispatch => {
-//     dispatch(requestPlaylists());
-
-//     const playlists = await api.playlists.searchPlaylist(term);
-
-//     dispatch(setPlaylists(playlists));
-
-//     return playlists;
-//   };
-// }
 
 export function searchPlaylists(term) {
   return {
-    type: 'API',
+    type: API,
     payload: {
       success: setPlaylists,
       filter: 'playlists',

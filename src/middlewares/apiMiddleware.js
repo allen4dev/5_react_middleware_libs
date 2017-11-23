@@ -1,15 +1,16 @@
-// TODO
+import * as actionTypes from './actionTypes';
+
 const apiMiddleware = ({ getState, dispatch }) => next => async action => {
-  if (action.type !== 'API') return next(action);
+  if (action.type !== actionTypes.API) return next(action);
 
   const { success, filter } = action.payload;
   const { apiEndpoint } = action.meta;
 
-  dispatch({ type: 'REQUEST_RESOURCE', payload: { filter } });
+  dispatch({ type: actionTypes.REQUEST_RESOURCE, payload: { filter } });
 
   const data = await apiEndpoint();
 
-  dispatch(success(data));
+  dispatch(success(data, filter));
 };
 
 export default apiMiddleware;
