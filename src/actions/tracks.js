@@ -8,7 +8,7 @@ export const FETCH_TRACKS_REQUEST = 'FETCH_TRACKS_REQUEST';
 export function setTracks(tracks) {
   return {
     type: FETCH_TRACKS_SUCCESS,
-    payload: tracks,
+    payload: { tracks, filter: 'tracks' },
   };
 }
 
@@ -19,14 +19,27 @@ export function requestTracks() {
 }
 
 // async actions
+// export function searchTracks(term) {
+//   return async dispatch => {
+//     dispatch(requestTracks());
+
+//     const results = await api.tracks.searchTracks(term);
+
+//     dispatch(setTracks(results));
+
+//     return results;
+//   };
+// }
+
 export function searchTracks(term) {
-  return async dispatch => {
-    dispatch(requestTracks());
-
-    const results = await api.tracks.searchTracks(term);
-
-    dispatch(setTracks(results));
-
-    return results;
+  return {
+    type: 'API',
+    payload: {
+      success: setTracks,
+      filter: 'tracks',
+    },
+    meta: {
+      apiEndpoint: () => api.tracks.searchTracks(term),
+    },
   };
 }
