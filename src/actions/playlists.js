@@ -1,5 +1,7 @@
 import api from './../api';
 import { createAction } from 'redux-actions';
+
+import { normalizeSetList } from './../schemas/playlists';
 import { API } from './../middlewares/actionTypes';
 
 // action types
@@ -11,5 +13,8 @@ export const setPlaylists = createAction(FETCH_PLAYLISTS_SUCCESS);
 export const searchPlaylists = createAction(
   API,
   () => ({ success: setPlaylists, filter: 'playlists' }),
-  term => ({ apiEndpoint: () => api.playlists.searchPlaylist(term) })
+  term => ({
+    apiEndpoint: () => api.playlists.searchPlaylist(term),
+    normalize: normalizeSetList,
+  })
 );

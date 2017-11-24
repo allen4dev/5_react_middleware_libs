@@ -5,14 +5,21 @@ import { REQUEST_RESOURCE } from './../middlewares/actionTypes';
 import { FETCH_PLAYLISTS_SUCCESS } from './../actions/playlists';
 
 const INITIAL_STATE = {
-  entities: [],
+  entities: {},
+  byIds: [],
   fetching: false,
 };
 
 const entitiesReducer = handleAction(
   FETCH_PLAYLISTS_SUCCESS,
-  (state, action) => [...state, ...action.payload],
+  (state, action) => ({ ...state, ...action.payload.entities.playlists }),
   INITIAL_STATE.entities
+);
+
+const byIdsReducer = handleAction(
+  FETCH_PLAYLISTS_SUCCESS,
+  (state, action) => [...state, ...action.payload.result],
+  INITIAL_STATE.byIds
 );
 
 const fetchingReducer = handleActions(
@@ -31,6 +38,7 @@ const fetchingReducer = handleActions(
 
 const reducer = combineReducers({
   entities: entitiesReducer,
+  byIds: byIdsReducer,
   fetching: fetchingReducer,
 });
 

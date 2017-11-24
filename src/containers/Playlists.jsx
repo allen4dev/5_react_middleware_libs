@@ -30,7 +30,7 @@ export class Playlists extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.playlists.entities,
+    items: state.playlists.byIds.map(id => state.playlists.entities[id]),
     fetching: state.playlists.fetching,
   };
 }
