@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { handleAction, handleActions } from 'redux-actions';
 
 import { REQUEST_RESOURCE } from './../middlewares/actionTypes';
 import { FETCH_PLAYLISTS_SUCCESS } from './../actions/playlists';
@@ -8,32 +9,25 @@ const INITIAL_STATE = {
   fetching: false,
 };
 
-function entitiesReducer(state = INITIAL_STATE.entities, action = {}) {
-  switch (action.type) {
-    case FETCH_PLAYLISTS_SUCCESS:
-      return [...state, ...action.payload.playlists];
+const entitiesReducer = handleAction(
+  FETCH_PLAYLISTS_SUCCESS,
+  (state, action) => [...state, ...action.payload],
+  INITIAL_STATE.entities
+);
 
-    default:
-      return state;
-  }
-}
+const fetchingReducer = handleActions(
+  {
+    [REQUEST_RESOURCE]: (state, action) => {
+      if (!action.payload || action.payload.filter !== 'playlists') {
+        return state;
+      }
 
-function fetchingReducer(state = INITIAL_STATE.fetching, action = {}) {
-  if (!action.payload || action.payload.filter !== 'playlists') {
-    return state;
-  }
-
-  switch (action.type) {
-    case REQUEST_RESOURCE:
       return true;
-
-    case FETCH_PLAYLISTS_SUCCESS:
-      return false;
-
-    default:
-      return state;
-  }
-}
+    },
+    [FETCH_PLAYLISTS_SUCCESS]: () => false,
+  },
+  INITIAL_STATE.fetching
+);
 
 const reducer = combineReducers({
   entities: entitiesReducer,
