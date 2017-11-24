@@ -5,14 +5,21 @@ import { FETCH_TRACKS_SUCCESS } from './../actions/tracks';
 import { REQUEST_RESOURCE } from './../middlewares/actionTypes';
 
 const INITIAL_STATE = {
-  entities: [],
+  entities: {},
+  byIds: [],
   fetching: false,
 };
 
 const entitiesReducer = handleAction(
   FETCH_TRACKS_SUCCESS,
-  (state, action) => [...state, ...action.payload],
+  (state, action) => ({ ...state, ...action.payload.entities.tracks }),
   INITIAL_STATE.entities
+);
+
+const byIdsReducer = handleAction(
+  FETCH_TRACKS_SUCCESS,
+  (state, action) => [...state, ...action.payload.result],
+  INITIAL_STATE.byIds
 );
 
 const fetchingReducer = handleActions(
@@ -31,6 +38,7 @@ const fetchingReducer = handleActions(
 
 const reducer = combineReducers({
   entities: entitiesReducer,
+  byIds: byIdsReducer,
   fetching: fetchingReducer,
 });
 

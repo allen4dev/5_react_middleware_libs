@@ -30,7 +30,7 @@ export class Tracks extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.tracks.entities,
+    items: state.tracks.byIds.map(id => state.tracks.entities[id]),
     fetching: state.tracks.fetching,
   };
 }

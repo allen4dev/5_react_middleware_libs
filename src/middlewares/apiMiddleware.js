@@ -4,13 +4,17 @@ const apiMiddleware = ({ getState, dispatch }) => next => async action => {
   if (action.type !== actionTypes.API) return next(action);
 
   const { success, filter } = action.payload;
-  const { apiEndpoint } = action.meta;
+  const { apiEndpoint, normalize } = action.meta;
 
   dispatch({ type: actionTypes.REQUEST_RESOURCE, payload: { filter } });
 
-  const data = await apiEndpoint();
+  let response = await apiEndpoint();
 
-  dispatch(success(data));
+  if (normalize) {
+    response = normalize(response);
+  }
+
+  dispatch(success(response));
 };
 
 export default apiMiddleware;

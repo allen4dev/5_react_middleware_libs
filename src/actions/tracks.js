@@ -1,7 +1,8 @@
 import { createAction } from 'redux-actions';
 
-import api from './../api';
+import { normalizeTrackList } from '../schemas/tracks';
 
+import api from './../api';
 import { API } from './../middlewares/actionTypes';
 
 // action types
@@ -14,5 +15,6 @@ export const searchTracks = createAction(
   () => ({ success: setTracks, filter: 'tracks' }),
   term => ({
     apiEndpoint: () => api.tracks.searchTracks(term),
+    normalize: normalizeTrackList,
   })
 );
