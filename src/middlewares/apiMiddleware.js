@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 
 const apiMiddleware = ({ getState, dispatch }) => next => async action => {
+  console.log(action);
   if (action.type !== actionTypes.API) return next(action);
 
   const { success, filter } = action.payload;
@@ -10,7 +11,7 @@ const apiMiddleware = ({ getState, dispatch }) => next => async action => {
 
   const data = await apiEndpoint();
 
-  dispatch(success(data, filter));
+  dispatch(success(data));
 };
 
 export default apiMiddleware;
